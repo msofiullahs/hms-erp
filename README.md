@@ -73,14 +73,18 @@ SIMRS Cendana implementation is carried out over 12 months (onsite & online/remo
 6. Run `npm install && npm run build`
 7. Run `php artisan serve`
 
+## Homepage Screenshot
+
+![HMS-ERP homepage screenshot](docs/homepage-screenshot.svg)
+
 ## License
 
-Lifetime License
+This repository is licensed by permission of the project owner. For license inquiries or usage approval, contact [sofiullah.work@gmail.com](mailto:sofiullah.work@gmail.com).
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within this project, please send an email to [sofiullah.work@gmail.com](mailto:sofiullah.work@gmail.com). All security issues will be promptly addressed.
 
-## License
+## Third-Party License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
