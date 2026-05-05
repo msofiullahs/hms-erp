@@ -4,53 +4,78 @@ namespace Modules\AdmissionRegistration\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
+use Modules\AdmissionRegistration\Http\Requests\AdmissionRegistrationRequest;
+use Modules\AdmissionRegistration\Models\AdmissionRegistration;
 
 class AdmissionRegistrationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        return view('admissionregistration::index');
+        $registrations = AdmissionRegistration::latest()->paginate(15);
+
+        return Inertia::render('AdmissionRegistration/Index', [
+            'registrations' => $registrations,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): Response
     {
-        return view('admissionregistration::create');
+        return Inertia::render('AdmissionRegistration/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function store(AdmissionRegistrationRequest $request): RedirectResponse
     {
-        return view('admissionregistration::show');
+        $registration = AdmissionRegistration::create($request->validated());
+
+        if ($request->wantsJson()) {
+            return response()->json($registration, 201);
+        }
+
+        return redirect()
+            ->route('admissionregistration.index')
+            ->with('success', 'Admission registration created successfully.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function show(AdmissionRegistration $admissionregistration): Response
     {
-        return view('admissionregistration::edit');
+        return Inertia::render('AdmissionRegistration/Show', [
+            'registration' => $admissionregistration,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
+    public function edit(AdmissionRegistration $admissionregistration): Response
+    {
+        return Inertia::render('AdmissionRegistration/Edit', [
+            'registration' => $admissionregistration,
+        ]);
+    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+    public function update(AdmissionRegistrationRequest $request, AdmissionRegistration $admissionregistration): RedirectResponse
+    {
+        $admissionregistration->update($request->validated());
+
+        if ($request->wantsJson()) {
+            return response()->json($admissionregistration);
+        }
+
+        return redirect()
+            ->route('admissionregistration.index')
+            ->with('success', 'Admission registration updated successfully.');
+    }
+
+    public function destroy(Request $request, AdmissionRegistration $admissionregistration): RedirectResponse
+    {
+        $admissionregistration->delete();
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Admission registration deleted successfully.']);
+        }
+
+        return redirect()
+            ->route('admissionregistration.index')
+            ->with('success', 'Admission registration deleted successfully.');
+    }
 }
