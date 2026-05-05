@@ -19,11 +19,13 @@ defineProps({
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <ApiTokenManager
-                    :tokens="tokens"
-                    :available-permissions="availablePermissions"
-                    :default-permissions="defaultPermissions"
-                />
+                <div class="rounded-[2rem] bg-slate-900 border border-slate-800 p-6 shadow-[0_30px_60px_-50px_rgba(15,23,42,0.8)]">
+                    <ApiTokenManager
+                        :tokens="tokens"
+                        :available-permissions="availablePermissions"
+                        :default-permissions="defaultPermissions"
+                    />
+                </div>
             </div>
         </div>
     </AppLayout>

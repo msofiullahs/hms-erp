@@ -21,20 +21,23 @@ defineProps({
         </template>
 
         <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <UpdateTeamNameForm :team="team" :permissions="permissions" />
+            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 space-y-6">
+                <div class="rounded-[2rem] bg-slate-900 border border-slate-800 p-6 shadow-[0_30px_60px_-50px_rgba(15,23,42,0.8)]">
+                    <UpdateTeamNameForm :team="team" :permissions="permissions" />
+                </div>
 
-                <TeamMemberManager
-                    class="mt-10 sm:mt-0"
-                    :team="team"
-                    :available-roles="availableRoles"
-                    :user-permissions="permissions"
-                />
+                <div class="rounded-[2rem] bg-slate-900 border border-slate-800 p-6 shadow-[0_30px_60px_-50px_rgba(15,23,42,0.8)]">
+                    <TeamMemberManager
+                        :team="team"
+                        :available-roles="availableRoles"
+                        :user-permissions="permissions"
+                    />
+                </div>
 
                 <template v-if="permissions.canDeleteTeam && ! team.personal_team">
-                    <SectionBorder />
-
-                    <DeleteTeamForm class="mt-10 sm:mt-0" :team="team" />
+                    <div class="rounded-[2rem] bg-slate-900 border border-slate-800 p-6 shadow-[0_30px_60px_-50px_rgba(15,23,42,0.8)]">
+                        <DeleteTeamForm :team="team" />
+                    </div>
                 </template>
             </div>
         </div>
