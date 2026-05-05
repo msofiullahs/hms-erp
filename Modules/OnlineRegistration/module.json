@@ -1,0 +1,11 @@
+{
+    "name": "OnlineRegistration",
+    "alias": "onlineregistration",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\OnlineRegistration\\Providers\\OnlineRegistrationServiceProvider"
+    ],
+    "files": []
+}

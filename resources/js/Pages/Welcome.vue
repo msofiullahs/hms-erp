@@ -50,6 +50,7 @@ const page = usePage();
                             <Link v-if="page.props.auth.user" :href="route('dashboard')" class="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300">Open Dashboard</Link>
                             <Link v-else-if="canLogin" :href="route('login')" class="inline-flex items-center justify-center rounded-full border border-slate-700 bg-white/5 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:bg-white/10">Log In</Link>
                             <Link v-if="!page.props.auth.user && canRegister" :href="route('register')" class="inline-flex items-center justify-center rounded-full bg-slate-100 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200">Start Free Trial</Link>
+                            <Link :href="route('online-registration.create')" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Public Portal</Link>
                         </div>
 
                         <div class="mt-12 grid gap-4 sm:grid-cols-2">
