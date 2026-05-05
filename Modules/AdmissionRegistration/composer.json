@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/admissionregistration",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\AdmissionRegistration\\": "app/",
+            "Modules\\AdmissionRegistration\\database\\factories\\": "database/factories/",
+            "Modules\\AdmissionRegistration\\database\\seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\AdmissionRegistration\\Tests\\": "tests/"
+        }
+    }
+}
