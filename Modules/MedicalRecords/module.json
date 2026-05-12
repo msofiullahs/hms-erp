@@ -1,0 +1,11 @@
+{
+    "name": "MedicalRecords",
+    "alias": "medicalrecords",
+    "description": "Patient master file (Rekam Medis) and hospital reporting: medical record numbers, demographics, insurance, visit ledger, and statistical reports.",
+    "keywords": ["rekam-medis", "patient", "mrn", "pelaporan"],
+    "priority": 0,
+    "providers": [
+        "Modules\\MedicalRecords\\Providers\\MedicalRecordsServiceProvider"
+    ],
+    "files": []
+}

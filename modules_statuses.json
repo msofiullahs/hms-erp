@@ -1,5 +1,6 @@
 {
     "AdmissionRegistration": true,
     "OnlineRegistration": true,
-    "SelfServiceQueue": true
+    "SelfServiceQueue": true,
+    "MedicalRecords": true
 }
