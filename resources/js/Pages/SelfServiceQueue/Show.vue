@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     ticket: Object,
@@ -33,10 +34,10 @@ function formatTime(iso) {
 </script>
 
 <template>
-    <Head :title="`Tiket ${props.ticket.ticket_number}`" />
+    <AppLayout :title="`Tiket ${props.ticket.ticket_number}`">
+        <Head :title="`Tiket ${props.ticket.ticket_number}`" />
 
-    <div class="py-12">
-        <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-3xl">
             <div class="mb-6 flex items-center justify-between">
                 <Link :href="route('selfservicequeue.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Kembali ke daftar</Link>
                 <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium uppercase tracking-wider text-slate-700">{{ props.ticket.status }}</span>
@@ -87,5 +88,5 @@ function formatTime(iso) {
                 </div>
             </div>
         </div>
-    </div>
+    </AppLayout>
 </template>

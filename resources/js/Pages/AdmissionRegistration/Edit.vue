@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import AdmissionRegistrationForm from '@/Pages/AdmissionRegistration/Shared/AdmissionRegistrationForm.vue';
 
 const props = defineProps({
@@ -10,8 +11,10 @@ const routeName = route('admissionregistration.update', props.registration.id);
 </script>
 
 <template>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <AppLayout title="Edit Admission">
+        <Head title="Edit Admission" />
+
+        <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h1 class="text-2xl font-semibold text-gray-900">Edit Admission Registration</h1>
@@ -28,5 +31,5 @@ const routeName = route('admissionregistration.update', props.registration.id);
                 title="Edit Admission Registration"
             />
         </div>
-    </div>
+    </AppLayout>
 </template>

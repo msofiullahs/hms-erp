@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import { computed, ref } from 'vue';
 
 const props = defineProps({ record: Object });
@@ -68,10 +69,10 @@ const age = computed(() => {
 </script>
 
 <template>
-    <Head :title="`Rekam Medis ${props.record.mrn}`" />
+    <AppLayout :title="`Rekam Medis ${props.record.mrn}`">
+        <Head :title="`Rekam Medis ${props.record.mrn}`" />
 
-    <div class="py-12">
-        <div class="mx-auto max-w-5xl sm:px-6 lg:px-8 space-y-6">
+        <div class="mx-auto max-w-5xl space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <Link :href="route('medicalrecords.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Daftar Pasien</Link>
@@ -195,5 +196,5 @@ const age = computed(() => {
                 </table>
             </div>
         </div>
-    </div>
+    </AppLayout>
 </template>

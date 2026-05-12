@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -57,10 +58,10 @@ function formatTime(iso) {
 </script>
 
 <template>
-    <Head title="Antrian Mandiri" />
+    <AppLayout title="Antrian Mandiri">
+        <Head title="Antrian Mandiri" />
 
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
                     <h1 class="text-2xl font-semibold text-gray-900">Sistem Antrian (Anjungan Mandiri)</h1>
@@ -158,5 +159,5 @@ function formatTime(iso) {
                 </div>
             </div>
         </div>
-    </div>
+    </AppLayout>
 </template>

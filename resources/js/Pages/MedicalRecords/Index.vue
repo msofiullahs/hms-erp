@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link, router } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref, watch } from 'vue';
 
 const props = defineProps({
@@ -45,10 +46,10 @@ function insuranceClass(type) {
 </script>
 
 <template>
-    <Head title="Rekam Medis" />
+    <AppLayout title="Rekam Medis">
+        <Head title="Rekam Medis" />
 
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
                     <h1 class="text-2xl font-semibold text-gray-900">Rekam Medis Pasien</h1>
@@ -129,5 +130,5 @@ function insuranceClass(type) {
                 </div>
             </div>
         </div>
-    </div>
+    </AppLayout>
 </template>

@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 
 const props = defineProps({
     registration: Object,
@@ -7,10 +8,10 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-12">
+    <AppLayout title="Admission Details">
         <Head title="Admission Registration Details" />
 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
                     <h1 class="text-2xl font-semibold text-gray-900">Admission Registration Details</h1>
@@ -56,5 +57,5 @@ const props = defineProps({
                 </div>
             </div>
         </div>
-    </div>
+    </AppLayout>
 </template>

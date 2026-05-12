@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import AdmissionRegistrationForm from '@/Pages/AdmissionRegistration/Shared/AdmissionRegistrationForm.vue';
 
 const registration = {
@@ -16,8 +17,10 @@ const routeName = route('admissionregistration.store');
 </script>
 
 <template>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <AppLayout title="New Admission">
+        <Head title="New Admission" />
+
+        <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h1 class="text-2xl font-semibold text-gray-900">New Admission Registration</h1>
@@ -34,5 +37,5 @@ const routeName = route('admissionregistration.store');
                 title="Create Admission Registration"
             />
         </div>
-    </div>
+    </AppLayout>
 </template>

@@ -1,15 +1,16 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import MedicalRecordForm from '@/Pages/MedicalRecords/Shared/MedicalRecordForm.vue';
 
 defineProps({ suggestedMrn: String });
 </script>
 
 <template>
-    <Head title="Pasien Baru" />
+    <AppLayout title="Pasien Baru">
+        <Head title="Pasien Baru" />
 
-    <div class="py-12">
-        <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-4xl">
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <Link :href="route('medicalrecords.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Kembali</Link>
@@ -19,5 +20,5 @@ defineProps({ suggestedMrn: String });
             </div>
             <MedicalRecordForm :record="{}" :submit-url="route('medicalrecords.store')" method="post" />
         </div>
-    </div>
+    </AppLayout>
 </template>

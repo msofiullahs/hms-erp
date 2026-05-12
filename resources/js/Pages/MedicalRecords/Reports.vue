@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import { computed } from 'vue';
 
 const props = defineProps({
@@ -44,10 +45,10 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
 </script>
 
 <template>
-    <Head title="Laporan Rekam Medis" />
+    <AppLayout title="Laporan Rekam Medis">
+        <Head title="Laporan Rekam Medis" />
 
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
+        <div class="mx-auto max-w-7xl space-y-6">
             <div class="flex items-center justify-between">
                 <div>
                     <Link :href="route('medicalrecords.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Rekam Medis</Link>
@@ -151,5 +152,5 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
                 </div>
             </div>
         </div>
-    </div>
+    </AppLayout>
 </template>
