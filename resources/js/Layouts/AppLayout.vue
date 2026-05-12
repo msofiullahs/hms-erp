@@ -12,6 +12,9 @@ const menuItems = [
     { label: 'Dashboard', route: 'dashboard' },
     { label: 'Admission Registration', route: 'admissionregistration.index' },
     { label: 'Online Registration Portal', route: 'online-registration.create' },
+    { label: 'Self-Service Queue', route: 'selfservicequeue.index' },
+    { label: 'Medical Records', route: 'medicalrecords.index' },
+    { label: 'Reports', route: 'medicalrecords.reports' },
 ];
 
 const logout = () => {
