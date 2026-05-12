@@ -1,0 +1,11 @@
+{
+    "name": "SelfServiceQueue",
+    "alias": "selfservicequeue",
+    "description": "Patient self-service kiosk and queue management (Anjungan Mandiri) with ticket issuance, counter calling, and waiting-room display board.",
+    "keywords": ["kiosk", "queue", "antrian", "anjungan-mandiri"],
+    "priority": 0,
+    "providers": [
+        "Modules\\SelfServiceQueue\\Providers\\SelfServiceQueueServiceProvider"
+    ],
+    "files": []
+}

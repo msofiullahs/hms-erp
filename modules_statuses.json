@@ -1,4 +1,5 @@
 {
     "AdmissionRegistration": true,
-    "OnlineRegistration": true
+    "OnlineRegistration": true,
+    "SelfServiceQueue": true
 }
