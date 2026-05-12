@@ -9,6 +9,8 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    protected $table = 'self_service_queue_tickets';
+
     protected $fillable = [
         'ticket_number',
         'customer_name',
