@@ -36,12 +36,16 @@
             "Modules\\AdmissionRegistration\\database\\seeders\\": "Modules/AdmissionRegistration/database/seeders/",
             "Modules\\OnlineRegistration\\": "Modules/OnlineRegistration/app/",
             "Modules\\OnlineRegistration\\database\\factories\\": "Modules/OnlineRegistration/database/factories/",
-            "Modules\\OnlineRegistration\\database\\seeders\\": "Modules/OnlineRegistration/database/seeders/"
+            "Modules\\OnlineRegistration\\database\\seeders\\": "Modules/OnlineRegistration/database/seeders/",
+            "Modules\\SelfServiceQueue\\": "Modules/SelfServiceQueue/app/",
+            "Modules\\SelfServiceQueue\\Database\\Factories\\": "Modules/SelfServiceQueue/database/factories/",
+            "Modules\\SelfServiceQueue\\Database\\Seeders\\": "Modules/SelfServiceQueue/database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Modules\\SelfServiceQueue\\Tests\\": "Modules/SelfServiceQueue/tests/"
         }
     },
     "scripts": {
