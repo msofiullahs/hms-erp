@@ -185,7 +185,8 @@ const age = computed(() => {
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium" :class="visit.status === 'active' ? 'bg-cyan-100 text-cyan-800' : 'bg-slate-100 text-slate-700'">{{ visit.status }}</span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm space-x-3">
+                                <Link :href="route('emr.show', visit.id)" class="text-indigo-600 hover:text-indigo-800">EMR</Link>
                                 <button v-if="visit.status === 'active'" @click="closeVisit(visit)" class="text-emerald-600 hover:text-emerald-800">Tutup</button>
                             </td>
                         </tr>
