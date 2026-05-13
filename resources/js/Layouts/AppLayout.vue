@@ -14,6 +14,7 @@ const menuItems = [
     { label: 'Online Registration Portal', route: 'online-registration.create' },
     { label: 'Self-Service Queue', route: 'selfservicequeue.index' },
     { label: 'Medical Records', route: 'medicalrecords.index' },
+    { label: 'Electronic Medical Record', route: 'emr.index' },
     { label: 'Reports', route: 'medicalrecords.reports' },
 ];
 
