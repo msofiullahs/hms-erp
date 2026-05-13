@@ -13,19 +13,19 @@ const props = defineProps({
 });
 
 function insuranceLabel(t) {
-    return { umum: 'Umum', bpjs: 'BPJS Kesehatan', asuransi: 'Asuransi Lain' }[t] || t;
+    return { umum: 'Self-pay', bpjs: 'BPJS', asuransi: 'Other Insurance' }[t] || t;
 }
 
 function genderLabel(g) {
-    return { M: 'Laki-laki', F: 'Perempuan', O: 'Lainnya', '-': 'Tidak diisi' }[g] || g;
+    return { M: 'Male', F: 'Female', O: 'Other', '-': 'Not specified' }[g] || g;
 }
 
 function visitTypeLabel(t) {
     return {
-        rawat_jalan: 'Rawat Jalan',
-        rawat_inap: 'Rawat Inap',
-        igd: 'IGD',
-        penunjang: 'Penunjang',
+        rawat_jalan: 'Outpatient',
+        rawat_inap: 'Inpatient',
+        igd: 'ER',
+        penunjang: 'Ancillary',
     }[t] || t;
 }
 
@@ -45,39 +45,39 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
 </script>
 
 <template>
-    <AppLayout title="Laporan Rekam Medis">
-        <Head title="Laporan Rekam Medis" />
+    <AppLayout title="Medical Records Reports">
+        <Head title="Medical Records Reports" />
 
         <div class="mx-auto max-w-7xl space-y-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <Link :href="route('medicalrecords.index')" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Rekam Medis</Link>
-                    <h1 class="mt-2 text-2xl font-semibold text-white">Laporan & Statistik</h1>
+                    <Link :href="route('medicalrecords.index')" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Medical Records</Link>
+                    <h1 class="mt-2 text-2xl font-semibold text-white">Reports & Statistics</h1>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white shadow rounded-lg p-5">
-                    <p class="text-xs uppercase tracking-wider text-gray-500">Total Pasien</p>
+                    <p class="text-xs uppercase tracking-wider text-gray-500">Total Patients</p>
                     <p class="mt-2 text-3xl font-semibold text-gray-900">{{ props.totals.patients }}</p>
                 </div>
                 <div class="bg-white shadow rounded-lg p-5">
-                    <p class="text-xs uppercase tracking-wider text-gray-500">Kunjungan Hari Ini</p>
+                    <p class="text-xs uppercase tracking-wider text-gray-500">Visits Today</p>
                     <p class="mt-2 text-3xl font-semibold text-gray-900">{{ props.totals.visits_today }}</p>
                 </div>
                 <div class="bg-white shadow rounded-lg p-5">
-                    <p class="text-xs uppercase tracking-wider text-gray-500">Kunjungan Bulan Ini</p>
+                    <p class="text-xs uppercase tracking-wider text-gray-500">Visits This Month</p>
                     <p class="mt-2 text-3xl font-semibold text-gray-900">{{ props.totals.visits_month }}</p>
                 </div>
                 <div class="bg-white shadow rounded-lg p-5">
-                    <p class="text-xs uppercase tracking-wider text-gray-500">Kunjungan Aktif</p>
+                    <p class="text-xs uppercase tracking-wider text-gray-500">Active Visits</p>
                     <p class="mt-2 text-3xl font-semibold text-gray-900">{{ props.totals.active_visits }}</p>
                 </div>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-2">
                 <div class="bg-white shadow rounded-lg p-6">
-                    <h2 class="text-base font-semibold text-gray-900">Distribusi Penjamin</h2>
+                    <h2 class="text-base font-semibold text-gray-900">Insurance Distribution</h2>
                     <div class="mt-4 space-y-3">
                         <div v-for="(count, key) in props.byInsurance" :key="key">
                             <div class="flex items-center justify-between text-sm">
@@ -93,7 +93,7 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-6">
-                    <h2 class="text-base font-semibold text-gray-900">Distribusi Jenis Kelamin</h2>
+                    <h2 class="text-base font-semibold text-gray-900">Gender Distribution</h2>
                     <div class="mt-4 space-y-3">
                         <div v-for="(count, key) in props.byGender" :key="key">
                             <div class="flex items-center justify-between text-sm">
@@ -109,7 +109,7 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-6">
-                    <h2 class="text-base font-semibold text-gray-900">Kunjungan per Jenis (Bulan Ini)</h2>
+                    <h2 class="text-base font-semibold text-gray-900">Visits by Type (This Month)</h2>
                     <div class="mt-4 space-y-3">
                         <div v-for="(count, key) in props.visitsByType" :key="key">
                             <div class="flex items-center justify-between text-sm">
@@ -125,7 +125,7 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-6">
-                    <h2 class="text-base font-semibold text-gray-900">Top 10 Departemen (Bulan Ini)</h2>
+                    <h2 class="text-base font-semibold text-gray-900">Top 10 Departments (This Month)</h2>
                     <ul class="mt-4 space-y-2">
                         <li v-for="dep in props.topDepartments" :key="dep.department" class="flex items-center justify-between text-sm">
                             <span class="text-gray-700">{{ dep.department }}</span>
@@ -137,7 +137,7 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
             </div>
 
             <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-base font-semibold text-gray-900">Tren Pendaftaran Pasien (12 Bulan)</h2>
+                <h2 class="text-base font-semibold text-gray-900">Patient Registration Trend (12 Months)</h2>
                 <div class="mt-6 flex items-end gap-2 h-48">
                     <div
                         v-for="(count, bucket) in props.monthlyRegistrations"
@@ -148,7 +148,7 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
                         <div class="w-full rounded-t bg-indigo-500" :style="{ height: Math.max(2, (count / maxMonthly) * 100) + '%' }"></div>
                         <span class="mt-1 text-[10px] text-gray-500">{{ bucket.slice(2) }}</span>
                     </div>
-                    <p v-if="!Object.keys(props.monthlyRegistrations || {}).length" class="text-sm text-gray-500">Tidak ada data.</p>
+                    <p v-if="!Object.keys(props.monthlyRegistrations || {}).length" class="text-sm text-gray-500">No data.</p>
                 </div>
             </div>
         </div>

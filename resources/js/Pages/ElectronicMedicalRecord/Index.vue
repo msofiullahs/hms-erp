@@ -25,7 +25,7 @@ watch([scope, search], () => {
 
 function formatDateTime(iso) {
     if (!iso) return '—';
-    return new Date(iso).toLocaleString('id-ID', {
+    return new Date(iso).toLocaleString([], {
         day: '2-digit', month: '2-digit', year: 'numeric',
         hour: '2-digit', minute: '2-digit',
     });
@@ -33,30 +33,30 @@ function formatDateTime(iso) {
 
 function visitTypeLabel(t) {
     return {
-        rawat_jalan: 'Rawat Jalan',
-        rawat_inap: 'Rawat Inap',
-        igd: 'IGD',
-        penunjang: 'Penunjang',
+        rawat_jalan: 'Outpatient',
+        rawat_inap: 'Inpatient',
+        igd: 'ER',
+        penunjang: 'Ancillary',
     }[t] || t;
 }
 
 const scopes = [
-    { key: 'today', label: 'Hari Ini' },
-    { key: 'week', label: '7 Hari Terakhir' },
-    { key: 'locked', label: 'Terkunci' },
-    { key: 'all', label: 'Semua' },
+    { key: 'today', label: 'Today' },
+    { key: 'week', label: 'Last 7 days' },
+    { key: 'locked', label: 'Locked' },
+    { key: 'all', label: 'All' },
 ];
 </script>
 
 <template>
-    <AppLayout title="Rekam Medis Elektronik">
-        <Head title="Rekam Medis Elektronik" />
+    <AppLayout title="Electronic Medical Record">
+        <Head title="Electronic Medical Record" />
 
         <div class="mx-auto max-w-7xl space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-semibold text-white">Rekam Medis Elektronik</h1>
-                    <p class="mt-1 text-sm text-slate-400">Daftar encounter klinis: SOAP, tanda vital, diagnosis, resep, dan lampiran.</p>
+                    <h1 class="text-2xl font-semibold text-white">Electronic Medical Record</h1>
+                    <p class="mt-1 text-sm text-slate-400">Clinical encounters: SOAP notes, vitals, diagnoses, prescriptions, and attachments.</p>
                 </div>
             </div>
 
@@ -80,7 +80,7 @@ const scopes = [
                 <input
                     v-model="search"
                     type="search"
-                    placeholder="Cari nama pasien atau MRN…"
+                    placeholder="Search patient name or MRN…"
                     class="block w-full rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
             </div>
@@ -89,12 +89,12 @@ const scopes = [
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pasien</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kunjungan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dokter / Departemen</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visit</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor / Department</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diperbarui</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
                             <th class="px-6 py-3"></th>
                         </tr>
                     </thead>
@@ -111,16 +111,16 @@ const scopes = [
                                 <p class="text-xs">{{ e.department || '—' }}</p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span v-if="e.locked_at" class="inline-flex rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-800">Terkunci</span>
+                                <span v-if="e.locked_at" class="inline-flex rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-800">Locked</span>
                                 <span v-else class="inline-flex rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800">Draft</span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ formatDateTime(e.updated_at) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                <Link :href="route('emr.show', e.visit_id)" class="text-indigo-600 hover:text-indigo-800">Buka EMR</Link>
+                                <Link :href="route('emr.show', e.visit_id)" class="text-indigo-600 hover:text-indigo-800">Open EMR</Link>
                             </td>
                         </tr>
                         <tr v-if="props.encounters.data.length === 0">
-                            <td colspan="7" class="px-6 py-10 text-center text-sm text-gray-500">Tidak ada encounter pada rentang ini.</td>
+                            <td colspan="7" class="px-6 py-10 text-center text-sm text-gray-500">No encounters in this range.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -128,7 +128,7 @@ const scopes = [
 
             <div class="flex items-center justify-between">
                 <p class="text-sm text-slate-400">
-                    Menampilkan {{ props.encounters.from || 0 }}–{{ props.encounters.to || 0 }} dari {{ props.encounters.total }} encounter
+                    Showing {{ props.encounters.from || 0 }}–{{ props.encounters.to || 0 }} of {{ props.encounters.total }} encounters
                 </p>
                 <div class="inline-flex items-center space-x-1">
                     <Link

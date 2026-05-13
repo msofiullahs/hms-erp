@@ -23,17 +23,17 @@ watch([search, insurance], () => {
 });
 
 function destroyRecord(record) {
-    if (!confirm(`Hapus rekam medis ${record.mrn}?`)) return;
+    if (!confirm(`Delete medical record ${record.mrn}?`)) return;
     router.delete(route('medicalrecords.destroy', record.id), { preserveScroll: true });
 }
 
 function formatDate(iso) {
     if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('id-ID');
+    return new Date(iso).toLocaleDateString();
 }
 
 function insuranceLabel(type) {
-    return { umum: 'Umum', bpjs: 'BPJS', asuransi: 'Asuransi' }[type] || type;
+    return { umum: 'Self-pay', bpjs: 'BPJS', asuransi: 'Other Insurance' }[type] || type;
 }
 
 function insuranceClass(type) {
@@ -46,18 +46,18 @@ function insuranceClass(type) {
 </script>
 
 <template>
-    <AppLayout title="Rekam Medis">
-        <Head title="Rekam Medis" />
+    <AppLayout title="Medical Records">
+        <Head title="Medical Records" />
 
         <div class="mx-auto max-w-7xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
-                    <h1 class="text-2xl font-semibold text-white">Rekam Medis Pasien</h1>
-                    <p class="mt-1 text-sm text-slate-400">Master file pasien (MRN) dan riwayat kunjungan.</p>
+                    <h1 class="text-2xl font-semibold text-white">Patient Medical Records</h1>
+                    <p class="mt-1 text-sm text-slate-400">Patient master file (MRN) and visit history.</p>
                 </div>
                 <div class="flex gap-3">
-                    <Link :href="route('medicalrecords.reports')" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Laporan</Link>
-                    <Link :href="route('medicalrecords.create')" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">+ Pasien Baru</Link>
+                    <Link :href="route('medicalrecords.reports')" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Reports</Link>
+                    <Link :href="route('medicalrecords.create')" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">+ New Patient</Link>
                 </div>
             </div>
 
@@ -65,14 +65,14 @@ function insuranceClass(type) {
                 <input
                     v-model="search"
                     type="search"
-                    placeholder="Cari MRN, nama, NIK, atau no. BPJS…"
+                    placeholder="Search MRN, name, NIK, or BPJS number…"
                     class="flex-1 rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 />
                 <select v-model="insurance" class="rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:w-48">
-                    <option value="">Semua Jaminan</option>
-                    <option value="umum">Umum</option>
+                    <option value="">All insurance types</option>
+                    <option value="umum">Self-pay</option>
                     <option value="bpjs">BPJS</option>
-                    <option value="asuransi">Asuransi</option>
+                    <option value="asuransi">Other Insurance</option>
                 </select>
             </div>
 
@@ -81,12 +81,12 @@ function insuranceClass(type) {
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">MRN</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Lahir</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Kelamin</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jaminan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kunjungan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date of Birth</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Insurance</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visits</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -102,13 +102,13 @@ function insuranceClass(type) {
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ record.visits_count }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <Link :href="route('medicalrecords.show', record.id)" class="text-indigo-600 hover:text-indigo-800">Detail</Link>
+                                <Link :href="route('medicalrecords.show', record.id)" class="text-indigo-600 hover:text-indigo-800">Details</Link>
                                 <Link :href="route('medicalrecords.edit', record.id)" class="text-emerald-600 hover:text-emerald-800">Edit</Link>
-                                <button @click="destroyRecord(record)" class="text-rose-600 hover:text-rose-800">Hapus</button>
+                                <button @click="destroyRecord(record)" class="text-rose-600 hover:text-rose-800">Delete</button>
                             </td>
                         </tr>
                         <tr v-if="props.records.data.length === 0">
-                            <td colspan="7" class="px-6 py-10 text-center text-sm text-gray-500">Tidak ada rekam medis.</td>
+                            <td colspan="7" class="px-6 py-10 text-center text-sm text-gray-500">No medical records.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -116,7 +116,7 @@ function insuranceClass(type) {
 
             <div class="mt-6 flex items-center justify-between">
                 <p class="text-sm text-slate-400">
-                    Menampilkan {{ props.records.from || 0 }}–{{ props.records.to || 0 }} dari {{ props.records.total }} pasien
+                    Showing {{ props.records.from || 0 }}–{{ props.records.to || 0 }} of {{ props.records.total }} patients
                 </p>
                 <div class="inline-flex items-center space-x-1">
                     <Link

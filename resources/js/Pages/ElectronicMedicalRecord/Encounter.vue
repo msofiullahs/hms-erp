@@ -42,7 +42,7 @@ function saveEncounter() {
 }
 
 function lockEncounter() {
-    if (!confirm('Kunci encounter ini? Setelah dikunci tidak dapat diubah sampai dibuka kembali.')) return;
+    if (!confirm('Lock this encounter? Once locked it cannot be modified until unlocked.')) return;
     router.post(route('emr.lock', props.visit.id), {}, { preserveScroll: true });
 }
 
@@ -65,7 +65,7 @@ function addDiagnosis() {
 }
 
 function removeDiagnosis(id) {
-    if (!confirm('Hapus diagnosis ini?')) return;
+    if (!confirm('Remove this diagnosis?')) return;
     router.delete(route('emr.diagnoses.destroy', [props.encounter.id, id]), { preserveScroll: true });
 }
 
@@ -90,7 +90,7 @@ function addPrescription() {
 }
 
 function removePrescription(id) {
-    if (!confirm('Hapus resep ini?')) return;
+    if (!confirm('Remove this prescription?')) return;
     router.delete(route('emr.prescriptions.destroy', [props.encounter.id, id]), { preserveScroll: true });
 }
 
@@ -109,7 +109,7 @@ function addAttachment() {
 }
 
 function removeAttachment(id) {
-    if (!confirm('Hapus lampiran ini?')) return;
+    if (!confirm('Remove this attachment?')) return;
     router.delete(route('emr.attachments.destroy', [props.encounter.id, id]), { preserveScroll: true });
 }
 
@@ -131,7 +131,11 @@ function formatBytes(b) {
 function patientAge() {
     if (!props.patient.date_of_birth) return '—';
     const dob = new Date(props.patient.date_of_birth);
-    return Math.floor((Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000)) + ' thn';
+    return Math.floor((Date.now() - dob.getTime()) / (365.25 * 24 * 60 * 60 * 1000)) + ' yrs';
+}
+
+function genderLabel(g) {
+    return { M: 'Male', F: 'Female', O: 'Other' }[g] || '';
 }
 </script>
 
@@ -143,12 +147,12 @@ function patientAge() {
             <!-- Header -->
             <div class="bg-white shadow sm:rounded-lg p-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <Link :href="route('medicalrecords.show', props.patient.id)" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Rekam Medis Pasien</Link>
+                    <Link :href="route('medicalrecords.show', props.patient.id)" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Patient Record</Link>
                     <h1 class="mt-2 text-2xl font-semibold text-gray-900">{{ props.patient.name }}</h1>
                     <p class="text-sm text-gray-500">
                         <span class="font-mono">{{ props.patient.mrn }}</span>
                         <span class="ml-3">{{ patientAge() }}</span>
-                        <span v-if="props.patient.gender" class="ml-3">{{ props.patient.gender === 'M' ? 'Laki-laki' : props.patient.gender === 'F' ? 'Perempuan' : 'Lainnya' }}</span>
+                        <span v-if="props.patient.gender" class="ml-3">{{ genderLabel(props.patient.gender) }}</span>
                     </p>
                     <p class="mt-3 text-sm text-gray-700">
                         <span class="font-mono text-gray-500">{{ props.visit.visit_number }}</span>
@@ -158,20 +162,20 @@ function patientAge() {
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span v-if="locked" class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800">Terkunci</span>
+                    <span v-if="locked" class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800">Locked</span>
                     <span v-else class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Draft</span>
-                    <button v-if="!locked" @click="lockEncounter" class="rounded-md border border-rose-300 px-3 py-2 text-sm font-medium text-rose-700 hover:bg-rose-50">Kunci</button>
-                    <button v-else @click="unlockEncounter" class="rounded-md border border-emerald-300 px-3 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-50">Buka Kunci</button>
+                    <button v-if="!locked" @click="lockEncounter" class="rounded-md border border-rose-300 px-3 py-2 text-sm font-medium text-rose-700 hover:bg-rose-50">Lock</button>
+                    <button v-else @click="unlockEncounter" class="rounded-md border border-emerald-300 px-3 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-50">Unlock</button>
                 </div>
             </div>
 
             <!-- Vital signs + SOAP -->
             <form @submit.prevent="saveEncounter" class="space-y-6">
                 <section class="bg-white shadow sm:rounded-lg p-6">
-                    <h2 class="text-base font-semibold text-gray-900">Tanda Vital</h2>
+                    <h2 class="text-base font-semibold text-gray-900">Vital Signs</h2>
                     <div class="mt-4 grid gap-4 grid-cols-2 sm:grid-cols-4">
                         <div>
-                            <label class="block text-xs font-medium text-gray-600">Tek. Darah (mmHg)</label>
+                            <label class="block text-xs font-medium text-gray-600">BP (mmHg)</label>
                             <div class="mt-1 flex items-center gap-1">
                                 <input v-model="soapForm.systolic_bp" type="number" min="0" max="300" class="w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                                 <span class="text-gray-400">/</span>
@@ -179,15 +183,15 @@ function patientAge() {
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600">Nadi (bpm)</label>
+                            <label class="block text-xs font-medium text-gray-600">Pulse (bpm)</label>
                             <input v-model="soapForm.pulse" type="number" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600">RR (x/min)</label>
+                            <label class="block text-xs font-medium text-gray-600">Resp Rate (/min)</label>
                             <input v-model="soapForm.respiratory_rate" type="number" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600">Suhu (°C)</label>
+                            <label class="block text-xs font-medium text-gray-600">Temp (°C)</label>
                             <input v-model="soapForm.temperature" type="number" step="0.1" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                         </div>
                         <div>
@@ -195,11 +199,11 @@ function patientAge() {
                             <input v-model="soapForm.spo2" type="number" min="0" max="100" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600">BB (kg)</label>
+                            <label class="block text-xs font-medium text-gray-600">Weight (kg)</label>
                             <input v-model="soapForm.weight_kg" type="number" step="0.1" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-600">TB (cm)</label>
+                            <label class="block text-xs font-medium text-gray-600">Height (cm)</label>
                             <input v-model="soapForm.height_cm" type="number" step="0.1" class="mt-1 w-full rounded-md border-gray-300 text-sm shadow-sm" :disabled="locked" />
                         </div>
                         <div>
@@ -210,33 +214,33 @@ function patientAge() {
                 </section>
 
                 <section class="bg-white shadow sm:rounded-lg p-6">
-                    <h2 class="text-base font-semibold text-gray-900">Catatan SOAP</h2>
+                    <h2 class="text-base font-semibold text-gray-900">SOAP Notes</h2>
                     <div class="mt-4 grid gap-4 sm:grid-cols-2">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Subjective</label>
-                            <textarea v-model="soapForm.subjective" rows="6" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Keluhan utama, riwayat penyakit sekarang…"></textarea>
+                            <textarea v-model="soapForm.subjective" rows="6" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Chief complaint, history of present illness…"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Objective</label>
-                            <textarea v-model="soapForm.objective" rows="6" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Temuan pemeriksaan fisik…"></textarea>
+                            <textarea v-model="soapForm.objective" rows="6" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Physical exam findings…"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Assessment</label>
-                            <textarea v-model="soapForm.assessment" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Kesan klinis, diagnosis kerja…"></textarea>
+                            <textarea v-model="soapForm.assessment" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Clinical impression, working diagnosis…"></textarea>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Plan</label>
-                            <textarea v-model="soapForm.plan" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Rencana terapi, edukasi, follow-up…"></textarea>
+                            <textarea v-model="soapForm.plan" rows="5" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Treatment plan, education, follow-up…"></textarea>
                         </div>
                     </div>
                     <div class="mt-4 grid gap-4 sm:grid-cols-2">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Tenaga Medis</label>
-                            <input v-model="soapForm.recorded_by" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="dr. Nama" />
+                            <label class="block text-sm font-medium text-gray-700">Provider</label>
+                            <input v-model="soapForm.recorded_by" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" :disabled="locked" placeholder="Dr. Name" />
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end">
-                        <button type="submit" :disabled="soapForm.processing || locked" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Simpan Encounter</button>
+                        <button type="submit" :disabled="soapForm.processing || locked" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Save Encounter</button>
                     </div>
                 </section>
             </form>
@@ -244,25 +248,25 @@ function patientAge() {
             <!-- Diagnoses -->
             <section class="bg-white shadow sm:rounded-lg p-6">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-base font-semibold text-gray-900">Diagnosis (ICD-10)</h2>
+                    <h2 class="text-base font-semibold text-gray-900">Diagnoses (ICD-10)</h2>
                 </div>
 
                 <form v-if="!locked" @submit.prevent="addDiagnosis" class="mt-4 grid gap-3 sm:grid-cols-[120px_1fr_160px_auto]">
-                    <input v-model="diagnosisForm.icd10_code" type="text" placeholder="Kode (mis. J11.1)" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <input v-model="diagnosisForm.description" type="text" placeholder="Deskripsi diagnosis" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="diagnosisForm.icd10_code" type="text" placeholder="Code (e.g. J11.1)" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="diagnosisForm.description" type="text" placeholder="Diagnosis description" class="rounded-md border-gray-300 text-sm shadow-sm" />
                     <select v-model="diagnosisForm.type" class="rounded-md border-gray-300 text-sm shadow-sm">
                         <option v-for="(label, key) in props.options.diagnosis_types" :key="key" :value="key">{{ label }}</option>
                     </select>
-                    <button type="submit" :disabled="diagnosisForm.processing" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Tambah</button>
+                    <button type="submit" :disabled="diagnosisForm.processing" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Add</button>
                 </form>
                 <p v-if="diagnosisForm.errors.icd10_code" class="mt-1 text-sm text-red-600">{{ diagnosisForm.errors.icd10_code }}</p>
 
                 <table class="mt-4 min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                             <th class="px-3 py-2"></th>
                         </tr>
                     </thead>
@@ -272,11 +276,11 @@ function patientAge() {
                             <td class="px-3 py-2 text-sm text-gray-700">{{ d.description }}</td>
                             <td class="px-3 py-2 text-sm text-gray-500">{{ diagnosisTypeLabel(d.type) }}</td>
                             <td class="px-3 py-2 text-right">
-                                <button v-if="!locked" @click="removeDiagnosis(d.id)" class="text-rose-600 hover:text-rose-800 text-sm">Hapus</button>
+                                <button v-if="!locked" @click="removeDiagnosis(d.id)" class="text-rose-600 hover:text-rose-800 text-sm">Remove</button>
                             </td>
                         </tr>
                         <tr v-if="props.encounter.diagnoses.length === 0">
-                            <td colspan="4" class="px-3 py-6 text-center text-sm text-gray-500">Belum ada diagnosis.</td>
+                            <td colspan="4" class="px-3 py-6 text-center text-sm text-gray-500">No diagnoses yet.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -284,30 +288,30 @@ function patientAge() {
 
             <!-- Prescriptions -->
             <section class="bg-white shadow sm:rounded-lg p-6">
-                <h2 class="text-base font-semibold text-gray-900">Resep</h2>
+                <h2 class="text-base font-semibold text-gray-900">Prescriptions</h2>
 
                 <form v-if="!locked" @submit.prevent="addPrescription" class="mt-4 grid gap-3 sm:grid-cols-4">
-                    <input v-model="prescriptionForm.drug_name" type="text" placeholder="Nama obat *" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <input v-model="prescriptionForm.strength" type="text" placeholder="Kekuatan (mis. 500mg)" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <input v-model="prescriptionForm.form" type="text" placeholder="Bentuk (tab, syr…)" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="prescriptionForm.drug_name" type="text" placeholder="Drug name *" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="prescriptionForm.strength" type="text" placeholder="Strength (e.g. 500mg)" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="prescriptionForm.form" type="text" placeholder="Form (tab, syrup…)" class="rounded-md border-gray-300 text-sm shadow-sm" />
                     <select v-model="prescriptionForm.route" class="rounded-md border-gray-300 text-sm shadow-sm">
                         <option v-for="(label, key) in props.options.prescription_routes" :key="key" :value="key">{{ label }}</option>
                     </select>
-                    <input v-model="prescriptionForm.dosage" type="text" placeholder="Dosis (mis. 1 tab) *" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <input v-model="prescriptionForm.frequency" type="text" placeholder="Frekuensi (mis. 3x sehari) *" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <input v-model="prescriptionForm.duration" type="text" placeholder="Durasi (mis. 5 hari)" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <input v-model="prescriptionForm.quantity" type="number" min="0" placeholder="Jumlah" class="rounded-md border-gray-300 text-sm shadow-sm" />
-                    <textarea v-model="prescriptionForm.instructions" rows="2" placeholder="Instruksi khusus" class="rounded-md border-gray-300 text-sm shadow-sm sm:col-span-3"></textarea>
-                    <button type="submit" :disabled="prescriptionForm.processing" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Tambah</button>
+                    <input v-model="prescriptionForm.dosage" type="text" placeholder="Dosage (e.g. 1 tab) *" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="prescriptionForm.frequency" type="text" placeholder="Frequency (e.g. 3x daily) *" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="prescriptionForm.duration" type="text" placeholder="Duration (e.g. 5 days)" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="prescriptionForm.quantity" type="number" min="0" placeholder="Quantity" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <textarea v-model="prescriptionForm.instructions" rows="2" placeholder="Special instructions" class="rounded-md border-gray-300 text-sm shadow-sm sm:col-span-3"></textarea>
+                    <button type="submit" :disabled="prescriptionForm.processing" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Add</button>
                 </form>
 
                 <table class="mt-4 min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Obat</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dosis · Rute · Frek</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi / Jumlah</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Instruksi</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drug</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dose · Route · Freq</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration / Qty</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Instructions</th>
                             <th class="px-3 py-2"></th>
                         </tr>
                     </thead>
@@ -321,11 +325,11 @@ function patientAge() {
                             <td class="px-3 py-2 text-sm text-gray-700">{{ p.duration || '—' }}<span v-if="p.quantity" class="text-gray-500"> · {{ p.quantity }}</span></td>
                             <td class="px-3 py-2 text-sm text-gray-500 max-w-xs truncate">{{ p.instructions || '—' }}</td>
                             <td class="px-3 py-2 text-right">
-                                <button v-if="!locked" @click="removePrescription(p.id)" class="text-rose-600 hover:text-rose-800 text-sm">Hapus</button>
+                                <button v-if="!locked" @click="removePrescription(p.id)" class="text-rose-600 hover:text-rose-800 text-sm">Remove</button>
                             </td>
                         </tr>
                         <tr v-if="props.encounter.prescriptions.length === 0">
-                            <td colspan="5" class="px-3 py-6 text-center text-sm text-gray-500">Belum ada resep.</td>
+                            <td colspan="5" class="px-3 py-6 text-center text-sm text-gray-500">No prescriptions yet.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -333,12 +337,12 @@ function patientAge() {
 
             <!-- Attachments -->
             <section class="bg-white shadow sm:rounded-lg p-6">
-                <h2 class="text-base font-semibold text-gray-900">Lampiran</h2>
+                <h2 class="text-base font-semibold text-gray-900">Attachments</h2>
 
                 <form v-if="!locked" @submit.prevent="addAttachment" class="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]" enctype="multipart/form-data">
-                    <input v-model="attachmentForm.label" type="text" placeholder="Label (mis. Lab CBC)" class="rounded-md border-gray-300 text-sm shadow-sm" />
+                    <input v-model="attachmentForm.label" type="text" placeholder="Label (e.g. Lab CBC)" class="rounded-md border-gray-300 text-sm shadow-sm" />
                     <input @change="(e) => attachmentForm.file = e.target.files[0]" type="file" class="text-sm" />
-                    <button type="submit" :disabled="attachmentForm.processing" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Unggah</button>
+                    <button type="submit" :disabled="attachmentForm.processing" class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50">Upload</button>
                 </form>
                 <p v-if="attachmentForm.errors.file" class="mt-1 text-sm text-red-600">{{ attachmentForm.errors.file }}</p>
 
@@ -346,9 +350,9 @@ function patientAge() {
                     <thead>
                         <tr>
                             <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Label</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Berkas</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ukuran</th>
-                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diunggah</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                            <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uploaded by</th>
                             <th class="px-3 py-2"></th>
                         </tr>
                     </thead>
@@ -359,12 +363,12 @@ function patientAge() {
                             <td class="px-3 py-2 text-sm text-gray-500">{{ formatBytes(a.size_bytes) }}</td>
                             <td class="px-3 py-2 text-sm text-gray-500">{{ a.uploaded_by || '—' }}</td>
                             <td class="px-3 py-2 text-right space-x-3">
-                                <a :href="route('emr.attachments.download', [props.encounter.id, a.id])" class="text-indigo-600 hover:text-indigo-800 text-sm">Unduh</a>
-                                <button v-if="!locked" @click="removeAttachment(a.id)" class="text-rose-600 hover:text-rose-800 text-sm">Hapus</button>
+                                <a :href="route('emr.attachments.download', [props.encounter.id, a.id])" class="text-indigo-600 hover:text-indigo-800 text-sm">Download</a>
+                                <button v-if="!locked" @click="removeAttachment(a.id)" class="text-rose-600 hover:text-rose-800 text-sm">Remove</button>
                             </td>
                         </tr>
                         <tr v-if="props.encounter.attachments.length === 0">
-                            <td colspan="5" class="px-3 py-6 text-center text-sm text-gray-500">Belum ada lampiran.</td>
+                            <td colspan="5" class="px-3 py-6 text-center text-sm text-gray-500">No attachments yet.</td>
                         </tr>
                     </tbody>
                 </table>

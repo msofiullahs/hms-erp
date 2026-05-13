@@ -59,7 +59,7 @@ class MedicalRecordController extends Controller
 
         return redirect()
             ->route('medicalrecords.show', $record)
-            ->with('success', "Rekam medis {$record->mrn} berhasil dibuat.");
+            ->with('success', "Medical record {$record->mrn} created.");
     }
 
     public function show(MedicalRecord $medicalrecord): Response
@@ -84,7 +84,7 @@ class MedicalRecordController extends Controller
 
         return redirect()
             ->route('medicalrecords.show', $medicalrecord)
-            ->with('success', 'Rekam medis berhasil diperbarui.');
+            ->with('success', 'Medical record updated.');
     }
 
     public function destroy(MedicalRecord $medicalrecord): RedirectResponse
@@ -93,7 +93,7 @@ class MedicalRecordController extends Controller
 
         return redirect()
             ->route('medicalrecords.index')
-            ->with('success', 'Rekam medis dihapus.');
+            ->with('success', 'Medical record deleted.');
     }
 
     public function storeVisit(StoreMedicalRecordVisitRequest $request, MedicalRecord $medicalrecord): RedirectResponse
@@ -106,7 +106,7 @@ class MedicalRecordController extends Controller
 
         return redirect()
             ->route('medicalrecords.show', $medicalrecord)
-            ->with('success', "Kunjungan {$data['visit_number']} dicatat.");
+            ->with('success', "Visit {$data['visit_number']} recorded.");
     }
 
     public function closeVisit(MedicalRecord $medicalrecord, MedicalRecordVisit $visit): RedirectResponse
@@ -115,7 +115,7 @@ class MedicalRecordController extends Controller
 
         $visit->update(['status' => 'closed']);
 
-        return back()->with('success', "Kunjungan {$visit->visit_number} ditutup.");
+        return back()->with('success', "Visit {$visit->visit_number} closed.");
     }
 
     public function reports(): Response

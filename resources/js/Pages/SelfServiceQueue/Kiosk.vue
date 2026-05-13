@@ -25,15 +25,15 @@ function takeTicket(serviceType) {
 </script>
 
 <template>
-    <Head title="Anjungan Mandiri" />
+    <Head title="Self-Service Kiosk" />
 
     <div class="min-h-screen bg-slate-950 text-white">
         <div class="mx-auto max-w-6xl px-6 py-10">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm uppercase tracking-widest text-cyan-400">Anjungan Mandiri</p>
-                    <h1 class="mt-2 text-4xl font-semibold">Ambil Nomor Antrian</h1>
-                    <p class="mt-2 text-slate-400">Sentuh layanan yang anda butuhkan untuk mencetak nomor antrian.</p>
+                    <p class="text-sm uppercase tracking-widest text-cyan-400">Self-Service Kiosk</p>
+                    <h1 class="mt-2 text-4xl font-semibold">Take a Queue Number</h1>
+                    <p class="mt-2 text-slate-400">Tap the service you need to print a queue ticket.</p>
                 </div>
                 <div v-if="props.kioskId" class="rounded-2xl bg-slate-900 px-4 py-3 text-right text-xs text-slate-400">
                     <p class="uppercase tracking-widest">Kiosk</p>
@@ -60,15 +60,15 @@ function takeTicket(serviceType) {
                     <span
                         v-if="submitting === service.key"
                         class="absolute inset-x-6 bottom-6 text-sm text-cyan-300"
-                    >Menerbitkan tiket…</span>
+                    >Issuing ticket…</span>
                 </button>
             </div>
 
             <p v-if="form.errors.service_type" class="mt-6 text-sm text-red-400">{{ form.errors.service_type }}</p>
 
             <footer class="mt-12 flex items-center justify-between border-t border-slate-800 pt-6 text-xs text-slate-500">
-                <span>Sistem Antrian SIMRS</span>
-                <span>{{ new Date().toLocaleString('id-ID') }}</span>
+                <span>SIMRS Queue System</span>
+                <span>{{ new Date().toLocaleString() }}</span>
             </footer>
         </div>
     </div>

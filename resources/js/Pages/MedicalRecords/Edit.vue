@@ -13,7 +13,7 @@ const props = defineProps({ record: Object });
         <div class="mx-auto max-w-4xl">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <Link :href="route('medicalrecords.show', props.record.id)" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Kembali</Link>
+                    <Link :href="route('medicalrecords.show', props.record.id)" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Back</Link>
                     <h1 class="mt-2 text-2xl font-semibold text-white">Edit <span class="font-mono">{{ props.record.mrn }}</span></h1>
                 </div>
             </div>

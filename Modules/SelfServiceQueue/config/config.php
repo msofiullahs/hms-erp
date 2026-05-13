@@ -15,34 +15,34 @@ return [
     ],
     'service_types' => [
         'general' => [
-            'label' => 'Pendaftaran Umum',
+            'label' => 'General Registration',
             'prefix' => 'A',
-            'description' => 'Loket pendaftaran pasien umum.',
+            'description' => 'General patient registration counter.',
         ],
         'bpjs' => [
-            'label' => 'BPJS Kesehatan',
+            'label' => 'BPJS Insurance',
             'prefix' => 'B',
-            'description' => 'Loket khusus pasien BPJS.',
+            'description' => 'Dedicated counter for BPJS patients.',
         ],
         'pharmacy' => [
-            'label' => 'Farmasi',
+            'label' => 'Pharmacy',
             'prefix' => 'F',
-            'description' => 'Pengambilan obat dan resep.',
+            'description' => 'Medication and prescription pickup.',
         ],
         'lab' => [
-            'label' => 'Laboratorium',
+            'label' => 'Laboratory',
             'prefix' => 'L',
-            'description' => 'Pemeriksaan laboratorium.',
+            'description' => 'Laboratory examinations.',
         ],
         'radiology' => [
-            'label' => 'Radiologi',
+            'label' => 'Radiology',
             'prefix' => 'R',
-            'description' => 'Pemeriksaan radiologi.',
+            'description' => 'Radiology examinations.',
         ],
         'cashier' => [
-            'label' => 'Kasir',
+            'label' => 'Cashier',
             'prefix' => 'K',
-            'description' => 'Pembayaran dan administrasi.',
+            'description' => 'Payment and administration.',
         ],
     ],
     'board' => [

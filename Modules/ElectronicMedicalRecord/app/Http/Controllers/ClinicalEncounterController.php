@@ -122,7 +122,7 @@ class ClinicalEncounterController extends Controller
         $encounter = ClinicalEncounter::firstOrCreate(['medical_record_visit_id' => $visit->id]);
 
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci dan tidak dapat diubah.');
+            return back()->with('error', 'Encounter is locked and cannot be modified.');
         }
 
         $data = $request->validated();
@@ -133,7 +133,7 @@ class ClinicalEncounterController extends Controller
 
         $encounter->fill($data)->save();
 
-        return back()->with('success', 'Encounter berhasil diperbarui.');
+        return back()->with('success', 'Encounter saved.');
     }
 
     public function lock(MedicalRecordVisit $visit): RedirectResponse
@@ -141,7 +141,7 @@ class ClinicalEncounterController extends Controller
         $encounter = ClinicalEncounter::firstOrCreate(['medical_record_visit_id' => $visit->id]);
         $encounter->update(['locked_at' => now()]);
 
-        return back()->with('success', 'Encounter dikunci.');
+        return back()->with('success', 'Encounter locked.');
     }
 
     public function unlock(MedicalRecordVisit $visit): RedirectResponse
@@ -149,18 +149,18 @@ class ClinicalEncounterController extends Controller
         $encounter = ClinicalEncounter::firstOrCreate(['medical_record_visit_id' => $visit->id]);
         $encounter->update(['locked_at' => null]);
 
-        return back()->with('success', 'Kunci encounter dibuka.');
+        return back()->with('success', 'Encounter unlocked.');
     }
 
     public function storeDiagnosis(StoreEncounterDiagnosisRequest $request, ClinicalEncounter $encounter): RedirectResponse
     {
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci.');
+            return back()->with('error', 'Encounter is locked.');
         }
 
         $encounter->diagnoses()->create($request->validated());
 
-        return back()->with('success', 'Diagnosis ditambahkan.');
+        return back()->with('success', 'Diagnosis added.');
     }
 
     public function destroyDiagnosis(ClinicalEncounter $encounter, EncounterDiagnosis $diagnosis): RedirectResponse
@@ -168,23 +168,23 @@ class ClinicalEncounterController extends Controller
         abort_unless($diagnosis->clinical_encounter_id === $encounter->id, 404);
 
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci.');
+            return back()->with('error', 'Encounter is locked.');
         }
 
         $diagnosis->delete();
 
-        return back()->with('success', 'Diagnosis dihapus.');
+        return back()->with('success', 'Diagnosis removed.');
     }
 
     public function storePrescription(StoreEncounterPrescriptionRequest $request, ClinicalEncounter $encounter): RedirectResponse
     {
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci.');
+            return back()->with('error', 'Encounter is locked.');
         }
 
         $encounter->prescriptions()->create($request->validated());
 
-        return back()->with('success', 'Resep ditambahkan.');
+        return back()->with('success', 'Prescription added.');
     }
 
     public function destroyPrescription(ClinicalEncounter $encounter, EncounterPrescription $prescription): RedirectResponse
@@ -192,18 +192,18 @@ class ClinicalEncounterController extends Controller
         abort_unless($prescription->clinical_encounter_id === $encounter->id, 404);
 
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci.');
+            return back()->with('error', 'Encounter is locked.');
         }
 
         $prescription->delete();
 
-        return back()->with('success', 'Resep dihapus.');
+        return back()->with('success', 'Prescription removed.');
     }
 
     public function storeAttachment(StoreEncounterAttachmentRequest $request, ClinicalEncounter $encounter): RedirectResponse
     {
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci.');
+            return back()->with('error', 'Encounter is locked.');
         }
 
         $file = $request->file('file');
@@ -222,7 +222,7 @@ class ClinicalEncounterController extends Controller
             'uploaded_by' => optional(auth()->user())->name,
         ]);
 
-        return back()->with('success', 'Lampiran ditambahkan.');
+        return back()->with('success', 'Attachment added.');
     }
 
     public function destroyAttachment(ClinicalEncounter $encounter, EncounterAttachment $attachment): RedirectResponse
@@ -230,12 +230,12 @@ class ClinicalEncounterController extends Controller
         abort_unless($attachment->clinical_encounter_id === $encounter->id, 404);
 
         if ($encounter->isLocked()) {
-            return back()->with('error', 'Encounter terkunci.');
+            return back()->with('error', 'Encounter is locked.');
         }
 
         $attachment->delete();
 
-        return back()->with('success', 'Lampiran dihapus.');
+        return back()->with('success', 'Attachment removed.');
     }
 
     public function downloadAttachment(ClinicalEncounter $encounter, EncounterAttachment $attachment): StreamedResponse

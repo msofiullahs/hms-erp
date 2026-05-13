@@ -6,14 +6,14 @@ return [
         'prefix' => 'RM',
     ],
     'visit_types' => [
-        'rawat_jalan' => 'Rawat Jalan',
-        'rawat_inap' => 'Rawat Inap',
-        'igd' => 'Gawat Darurat (IGD)',
-        'penunjang' => 'Penunjang',
+        'rawat_jalan' => 'Outpatient',
+        'rawat_inap' => 'Inpatient',
+        'igd' => 'Emergency (ER)',
+        'penunjang' => 'Ancillary',
     ],
     'insurance_types' => [
-        'umum' => 'Umum',
-        'bpjs' => 'BPJS Kesehatan',
-        'asuransi' => 'Asuransi Lain',
+        'umum' => 'Self-pay',
+        'bpjs' => 'BPJS',
+        'asuransi' => 'Other Insurance',
     ],
 ];

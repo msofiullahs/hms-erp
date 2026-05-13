@@ -3,18 +3,18 @@
 return [
     'name' => 'ElectronicMedicalRecord',
     'diagnosis_types' => [
-        'primary' => 'Diagnosis Utama',
-        'secondary' => 'Diagnosis Sekunder',
-        'differential' => 'Diagnosis Banding',
+        'primary' => 'Primary',
+        'secondary' => 'Secondary',
+        'differential' => 'Differential',
     ],
     'prescription_routes' => [
-        'po' => 'Per Oral (PO)',
-        'iv' => 'Intravena (IV)',
-        'im' => 'Intramuskular (IM)',
-        'sc' => 'Subkutan (SC)',
-        'topical' => 'Topikal',
+        'po' => 'Oral (PO)',
+        'iv' => 'Intravenous (IV)',
+        'im' => 'Intramuscular (IM)',
+        'sc' => 'Subcutaneous (SC)',
+        'topical' => 'Topical',
         'inhaler' => 'Inhaler',
-        'other' => 'Lainnya',
+        'other' => 'Other',
     ],
     'attachment' => [
         'disk' => env('EMR_ATTACHMENT_DISK', 'local'),

@@ -33,7 +33,7 @@ function serveTicket(ticket) {
 }
 
 function cancelTicket(ticket) {
-    if (!confirm(`Batalkan tiket ${ticket.ticket_number}?`)) return;
+    if (!confirm(`Cancel ticket ${ticket.ticket_number}?`)) return;
     router.post(route('selfservicequeue.cancel', ticket.id), {}, { preserveScroll: true });
 }
 
@@ -48,7 +48,7 @@ function statusClass(status) {
 
 function formatTime(iso) {
     if (!iso) return '—';
-    return new Date(iso).toLocaleString('id-ID', {
+    return new Date(iso).toLocaleString([], {
         hour: '2-digit',
         minute: '2-digit',
         day: '2-digit',
@@ -58,32 +58,32 @@ function formatTime(iso) {
 </script>
 
 <template>
-    <AppLayout title="Antrian Mandiri">
-        <Head title="Antrian Mandiri" />
+    <AppLayout title="Self-Service Queue">
+        <Head title="Self-Service Queue" />
 
         <div class="mx-auto max-w-7xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
-                    <h1 class="text-2xl font-semibold text-white">Sistem Antrian (Anjungan Mandiri)</h1>
-                    <p class="mt-1 text-sm text-slate-400">Panggil, layani, dan pantau tiket yang dikeluarkan dari kiosk.</p>
+                    <h1 class="text-2xl font-semibold text-white">Self-Service Queue</h1>
+                    <p class="mt-1 text-sm text-slate-400">Call, serve, and track tickets issued from the kiosk.</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <a :href="route('selfservicequeue.kiosk.home')" target="_blank" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Buka Kiosk</a>
-                    <a :href="route('selfservicequeue.board')" target="_blank" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Papan Antrian</a>
+                    <a :href="route('selfservicequeue.kiosk.home')" target="_blank" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Open Kiosk</a>
+                    <a :href="route('selfservicequeue.board')" target="_blank" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Queue Board</a>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div class="bg-amber-50 border border-amber-200 rounded-lg px-5 py-4">
-                    <p class="text-xs font-medium uppercase tracking-wider text-amber-700">Menunggu</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-amber-700">Waiting</p>
                     <p class="mt-1 text-3xl font-semibold text-amber-900">{{ props.stats.waiting }}</p>
                 </div>
                 <div class="bg-cyan-50 border border-cyan-200 rounded-lg px-5 py-4">
-                    <p class="text-xs font-medium uppercase tracking-wider text-cyan-700">Dipanggil</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-cyan-700">Called</p>
                     <p class="mt-1 text-3xl font-semibold text-cyan-900">{{ props.stats.called }}</p>
                 </div>
                 <div class="bg-emerald-50 border border-emerald-200 rounded-lg px-5 py-4">
-                    <p class="text-xs font-medium uppercase tracking-wider text-emerald-700">Selesai hari ini</p>
+                    <p class="text-xs font-medium uppercase tracking-wider text-emerald-700">Served today</p>
                     <p class="mt-1 text-3xl font-semibold text-emerald-900">{{ props.stats.served_today }}</p>
                 </div>
             </div>
@@ -92,12 +92,12 @@ function formatTime(iso) {
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Layanan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diterbitkan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loket</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issued</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Counter</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -111,7 +111,7 @@ function formatTime(iso) {
                                     :value="counterFor(ticket)"
                                     @input="(e) => setCounter(ticket, e.target.value)"
                                     class="w-20 rounded-md border-gray-300 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                    placeholder="Loket"
+                                    placeholder="Counter"
                                 />
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -122,22 +122,22 @@ function formatTime(iso) {
                                     v-if="['waiting', 'called'].includes(ticket.status)"
                                     @click="callTicket(ticket)"
                                     class="text-cyan-600 hover:text-cyan-800"
-                                >Panggil</button>
+                                >Call</button>
                                 <button
                                     v-if="ticket.status === 'called'"
                                     @click="serveTicket(ticket)"
                                     class="text-emerald-600 hover:text-emerald-800"
-                                >Selesai</button>
+                                >Serve</button>
                                 <button
                                     v-if="['waiting', 'called'].includes(ticket.status)"
                                     @click="cancelTicket(ticket)"
                                     class="text-rose-600 hover:text-rose-800"
-                                >Batal</button>
-                                <Link :href="route('selfservicequeue.show', ticket.id)" class="text-indigo-600 hover:text-indigo-800">Detail</Link>
+                                >Cancel</button>
+                                <Link :href="route('selfservicequeue.show', ticket.id)" class="text-indigo-600 hover:text-indigo-800">Details</Link>
                             </td>
                         </tr>
                         <tr v-if="props.tickets.data.length === 0">
-                            <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-500">Belum ada tiket.</td>
+                            <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-500">No tickets yet.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -145,7 +145,7 @@ function formatTime(iso) {
 
             <div class="mt-6 flex items-center justify-between">
                 <p class="text-sm text-slate-400">
-                    Menampilkan {{ props.tickets.from || 0 }}–{{ props.tickets.to || 0 }} dari {{ props.tickets.total }} tiket
+                    Showing {{ props.tickets.from || 0 }}–{{ props.tickets.to || 0 }} of {{ props.tickets.total }} tickets
                 </p>
                 <div class="inline-flex items-center space-x-1">
                     <Link
