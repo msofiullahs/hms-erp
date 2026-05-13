@@ -21,6 +21,65 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ClinicalEncounterController extends Controller
 {
+    public function index(Request $request): Response
+    {
+        $scope = $request->query('scope', 'today');
+        $search = trim((string) $request->query('search'));
+
+        $query = ClinicalEncounter::query()
+            ->with(['visit.medicalRecord'])
+            ->latest('updated_at');
+
+        if ($scope === 'today') {
+            $query->whereDate('updated_at', today());
+        } elseif ($scope === 'week') {
+            $query->where('updated_at', '>=', now()->subDays(7));
+        } elseif ($scope === 'locked') {
+            $query->whereNotNull('locked_at');
+        }
+
+        if ($search !== '') {
+            $query->whereHas('visit.medicalRecord', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('mrn', 'like', "%$search%");
+            });
+        }
+
+        $encounters = $query->paginate(20)->withQueryString();
+
+        $encounters->getCollection()->transform(function (ClinicalEncounter $encounter) {
+            $patient = $encounter->visit?->medicalRecord;
+
+            return [
+                'id' => $encounter->id,
+                'visit_id' => $encounter->medical_record_visit_id,
+                'visit_number' => $encounter->visit?->visit_number,
+                'visit_type' => $encounter->visit?->visit_type,
+                'visit_date' => optional($encounter->visit?->visit_date)->toIso8601String(),
+                'doctor' => $encounter->visit?->doctor,
+                'department' => $encounter->visit?->department,
+                'mrn' => $patient?->mrn,
+                'patient_name' => $patient?->name,
+                'locked_at' => optional($encounter->locked_at)->toIso8601String(),
+                'updated_at' => optional($encounter->updated_at)->toIso8601String(),
+            ];
+        });
+
+        return Inertia::render('ElectronicMedicalRecord/Index', [
+            'encounters' => $encounters,
+            'filters' => [
+                'scope' => $scope,
+                'search' => $search,
+            ],
+            'totals' => [
+                'today' => ClinicalEncounter::whereDate('updated_at', today())->count(),
+                'week' => ClinicalEncounter::where('updated_at', '>=', now()->subDays(7))->count(),
+                'locked' => ClinicalEncounter::whereNotNull('locked_at')->count(),
+                'all' => ClinicalEncounter::count(),
+            ],
+        ]);
+    }
+
     public function show(MedicalRecordVisit $visit): Response
     {
         $visit->loadMissing('medicalRecord');
