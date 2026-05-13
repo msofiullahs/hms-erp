@@ -52,8 +52,8 @@ function insuranceClass(type) {
         <div class="mx-auto max-w-7xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">Rekam Medis Pasien</h1>
-                    <p class="mt-1 text-sm text-gray-600">Master file pasien (MRN) dan riwayat kunjungan.</p>
+                    <h1 class="text-2xl font-semibold text-white">Rekam Medis Pasien</h1>
+                    <p class="mt-1 text-sm text-slate-400">Master file pasien (MRN) dan riwayat kunjungan.</p>
                 </div>
                 <div class="flex gap-3">
                     <Link :href="route('medicalrecords.reports')" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Laporan</Link>
@@ -115,7 +115,7 @@ function insuranceClass(type) {
             </div>
 
             <div class="mt-6 flex items-center justify-between">
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-slate-400">
                     Menampilkan {{ props.records.from || 0 }}–{{ props.records.to || 0 }} dari {{ props.records.total }} pasien
                 </p>
                 <div class="inline-flex items-center space-x-1">

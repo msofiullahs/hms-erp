@@ -64,8 +64,8 @@ function formatTime(iso) {
         <div class="mx-auto max-w-7xl">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">Sistem Antrian (Anjungan Mandiri)</h1>
-                    <p class="mt-1 text-sm text-gray-600">Panggil, layani, dan pantau tiket yang dikeluarkan dari kiosk.</p>
+                    <h1 class="text-2xl font-semibold text-white">Sistem Antrian (Anjungan Mandiri)</h1>
+                    <p class="mt-1 text-sm text-slate-400">Panggil, layani, dan pantau tiket yang dikeluarkan dari kiosk.</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
                     <a :href="route('selfservicequeue.kiosk.home')" target="_blank" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Buka Kiosk</a>
@@ -144,7 +144,7 @@ function formatTime(iso) {
             </div>
 
             <div class="mt-6 flex items-center justify-between">
-                <p class="text-sm text-gray-700">
+                <p class="text-sm text-slate-400">
                     Menampilkan {{ props.tickets.from || 0 }}–{{ props.tickets.to || 0 }} dari {{ props.tickets.total }} tiket
                 </p>
                 <div class="inline-flex items-center space-x-1">

@@ -27,8 +27,8 @@ const deleteRegistration = (id) => {
         <div class="max-w-7xl mx-auto">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                     <div>
-                        <h1 class="text-2xl font-semibold text-gray-900">Admission Registrations</h1>
-                        <p class="mt-1 text-sm text-gray-600">Manage all registered admissions in the hospital.</p>
+                        <h1 class="text-2xl font-semibold text-white">Admission Registrations</h1>
+                        <p class="mt-1 text-sm text-slate-400">Manage all registered admissions in the hospital.</p>
                     </div>
                     <Link :href="route('admissionregistration.create')" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">New Admission</Link>
                 </div>
@@ -61,7 +61,7 @@ const deleteRegistration = (id) => {
                 </div>
 
                 <div class="mt-6 flex items-center justify-between">
-                    <p class="text-sm text-gray-700">
+                    <p class="text-sm text-slate-400">
                         Showing {{ props.registrations.from }} to {{ props.registrations.to }} of {{ props.registrations.total }} entries
                     </p>
                     <div class="inline-flex items-center space-x-1">

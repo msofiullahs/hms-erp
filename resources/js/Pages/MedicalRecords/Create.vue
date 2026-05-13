@@ -13,9 +13,9 @@ defineProps({ suggestedMrn: String });
         <div class="mx-auto max-w-4xl">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <Link :href="route('medicalrecords.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Kembali</Link>
-                    <h1 class="mt-2 text-2xl font-semibold text-gray-900">Pasien Baru</h1>
-                    <p class="text-sm text-gray-500">MRN akan diterbitkan otomatis (preview: <span class="font-mono">{{ suggestedMrn }}</span>)</p>
+                    <Link :href="route('medicalrecords.index')" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Kembali</Link>
+                    <h1 class="mt-2 text-2xl font-semibold text-white">Pasien Baru</h1>
+                    <p class="text-sm text-slate-400">MRN akan diterbitkan otomatis (preview: <span class="font-mono text-slate-300">{{ suggestedMrn }}</span>)</p>
                 </div>
             </div>
             <MedicalRecordForm :record="{}" :submit-url="route('medicalrecords.store')" method="post" />

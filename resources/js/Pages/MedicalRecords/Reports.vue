@@ -51,8 +51,8 @@ const visitsTotal = computed(() => Object.values(props.visitsByType || {}).reduc
         <div class="mx-auto max-w-7xl space-y-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <Link :href="route('medicalrecords.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Rekam Medis</Link>
-                    <h1 class="mt-2 text-2xl font-semibold text-gray-900">Laporan & Statistik</h1>
+                    <Link :href="route('medicalrecords.index')" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Rekam Medis</Link>
+                    <h1 class="mt-2 text-2xl font-semibold text-white">Laporan & Statistik</h1>
                 </div>
             </div>
 

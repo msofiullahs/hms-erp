@@ -75,9 +75,9 @@ const age = computed(() => {
         <div class="mx-auto max-w-5xl space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <Link :href="route('medicalrecords.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Daftar Pasien</Link>
-                    <h1 class="mt-2 text-2xl font-semibold text-gray-900">{{ props.record.name }}</h1>
-                    <p class="font-mono text-sm text-gray-500">{{ props.record.mrn }}</p>
+                    <Link :href="route('medicalrecords.index')" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Daftar Pasien</Link>
+                    <h1 class="mt-2 text-2xl font-semibold text-white">{{ props.record.name }}</h1>
+                    <p class="font-mono text-sm text-slate-400">{{ props.record.mrn }}</p>
                 </div>
                 <div class="flex gap-3">
                     <Link :href="route('medicalrecords.edit', props.record.id)" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Edit</Link>

@@ -39,8 +39,8 @@ function formatTime(iso) {
 
         <div class="mx-auto max-w-3xl">
             <div class="mb-6 flex items-center justify-between">
-                <Link :href="route('selfservicequeue.index')" class="text-sm text-indigo-600 hover:text-indigo-800">&larr; Kembali ke daftar</Link>
-                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium uppercase tracking-wider text-slate-700">{{ props.ticket.status }}</span>
+                <Link :href="route('selfservicequeue.index')" class="text-sm text-cyan-300 hover:text-cyan-200">&larr; Kembali ke daftar</Link>
+                <span class="rounded-full bg-slate-800 px-3 py-1 text-xs font-medium uppercase tracking-wider text-slate-200">{{ props.ticket.status }}</span>
             </div>
 
             <div class="rounded-2xl bg-white shadow p-8">

@@ -14,8 +14,8 @@ const props = defineProps({
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
-                    <h1 class="text-2xl font-semibold text-gray-900">Admission Registration Details</h1>
-                    <p class="mt-1 text-sm text-gray-600">Review the selected admission registration record.</p>
+                    <h1 class="text-2xl font-semibold text-white">Admission Registration Details</h1>
+                    <p class="mt-1 text-sm text-slate-400">Review the selected admission registration record.</p>
                 </div>
                 <div class="flex gap-2">
                     <Link :href="route('admissionregistration.edit', props.registration.id)" class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-700">Edit</Link>
