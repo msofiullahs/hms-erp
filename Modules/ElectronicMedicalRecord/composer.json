@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/electronicmedicalrecord",
+    "description": "",
+    "authors": [
+        {
+            "name": "Sofi",
+            "email": "sofiullah.work@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ElectronicMedicalRecord\\": "app/",
+            "Modules\\ElectronicMedicalRecord\\Database\\Factories\\": "database/factories/",
+            "Modules\\ElectronicMedicalRecord\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\ElectronicMedicalRecord\\Tests\\": "tests/"
+        }
+    }
+}

@@ -2,5 +2,6 @@
     "AdmissionRegistration": true,
     "OnlineRegistration": true,
     "SelfServiceQueue": true,
-    "MedicalRecords": true
+    "MedicalRecords": true,
+    "ElectronicMedicalRecord": true
 }

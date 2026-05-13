@@ -1,0 +1,11 @@
+{
+    "name": "ElectronicMedicalRecord",
+    "alias": "electronicmedicalrecord",
+    "description": "Electronic Medical Record (Rekam Medis Elektronik) clinical content per visit: SOAP notes, vital signs, diagnoses (ICD-10), prescriptions, and attachments.",
+    "keywords": ["emr", "rekam-medis-elektronik", "soap", "icd10"],
+    "priority": 0,
+    "providers": [
+        "Modules\\ElectronicMedicalRecord\\Providers\\ElectronicMedicalRecordServiceProvider"
+    ],
+    "files": []
+}

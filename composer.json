@@ -42,14 +42,18 @@
             "Modules\\SelfServiceQueue\\Database\\Seeders\\": "Modules/SelfServiceQueue/database/seeders/",
             "Modules\\MedicalRecords\\": "Modules/MedicalRecords/app/",
             "Modules\\MedicalRecords\\Database\\Factories\\": "Modules/MedicalRecords/database/factories/",
-            "Modules\\MedicalRecords\\Database\\Seeders\\": "Modules/MedicalRecords/database/seeders/"
+            "Modules\\MedicalRecords\\Database\\Seeders\\": "Modules/MedicalRecords/database/seeders/",
+            "Modules\\ElectronicMedicalRecord\\": "Modules/ElectronicMedicalRecord/app/",
+            "Modules\\ElectronicMedicalRecord\\Database\\Factories\\": "Modules/ElectronicMedicalRecord/database/factories/",
+            "Modules\\ElectronicMedicalRecord\\Database\\Seeders\\": "Modules/ElectronicMedicalRecord/database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
             "Modules\\SelfServiceQueue\\Tests\\": "Modules/SelfServiceQueue/tests/",
-            "Modules\\MedicalRecords\\Tests\\": "Modules/MedicalRecords/tests/"
+            "Modules\\MedicalRecords\\Tests\\": "Modules/MedicalRecords/tests/",
+            "Modules\\ElectronicMedicalRecord\\Tests\\": "Modules/ElectronicMedicalRecord/tests/"
         }
     },
     "scripts": {
